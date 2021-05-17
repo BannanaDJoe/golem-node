@@ -62,4 +62,4 @@ clean:			## Remove cached files older than 7 days
 
 .PHONY: presets
 presets: 		## Show the running node settings
-	python generate_presets.py
+	python3 generate_presets.py
