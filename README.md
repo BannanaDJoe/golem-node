@@ -27,22 +27,7 @@ Currently only works on Linux machines.
 
  # Changes : 
  To run more as 15 Container Stacks with Bridg Network i comment the network section on docker-compose.yml
- 
- maybee the following is needed : ( if after 15 New Stacks you get errors by Creating the NODES)
- 
- `nano /etc/docker/daemon.json`
- 
-` {`
-`  "default-address-pools":`
-`  [ `
-`    {"base":"10.10.0.0/16","size":24}`
-`  ]`
-`}`
- 
-Restart Docker Service : 
-
- `service docker restart`
- 
+  
 ### START ### 
 To Start the Automated Mode run python GLMAutoNODE.py
  
