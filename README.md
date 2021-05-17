@@ -24,7 +24,7 @@ Tested on Docker version 20.10.5 and docker-compose version 1.28.5.
 Currently only works on Linux machines.
  
  # Changes : 
- To run more as 15 Container Stacks with Bridg Network i comment the network section on docker-compose.yml
+ To run more as 15 Container Stacks with Bridge Network i comment the network section on docker-compose.yml
 ## :arrow_forward:  DYNAMIC Usage
  
 ## START ##
