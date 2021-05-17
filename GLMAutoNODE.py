@@ -6,6 +6,7 @@ import shutil, errno
 
 class Node:
 
+    Version = "0.1"
     # NODE INFOS
     NodeName = ""
     Wallet = ""
@@ -30,7 +31,6 @@ class Node:
     NEWDIR = ""
 
     def __init__(self):
-
         type (self).NodeID +=1
         if self.NodeID <= 1:
             self.quest()
@@ -45,6 +45,7 @@ class Node:
                 self.Run()
                 self.Looper()    
             else:            
+                self.setRaise()
                 self.dockerDIR()
                 self.confNode()
                 self.Run()
@@ -53,17 +54,20 @@ class Node:
             
     @classmethod
     def quest(cls):
-        cls.NodeName = str(input("Enter your Node Name:(default:BannanaNode):  "))
-       	cls.Wallet = str(input("Enter your Wallet Address:(default:DevWallet):   "))
-        cls.NODE_NUM = int(input("Enter Number of Nodes you want to Start:(default: 1 Node):  "))
-        cls.CPU = int(input("Enter your CPU amount to use:(default:3 CORES):   "))
-        cls.MEM = int(input("Enter Memory in GIB:(default:2 GB):   "))
-        cls.DISK = int(input("Enter DISKSPACE in GIB:(default:20 GB):   "))
-        cls.CPU_Hour = float(input("Enter CPU COSTS PER HOUR:(default:0.1 GLM):   "))
-        cls.ENV_Hour = float(input("Enter ENV COSTS PER HOUR:(default:0.02 GLM):   "))
-        cls.StartFee = float(input("ENTER PRICE FOR START JOBS:(default:0.0 GLM):   "))
+        
+        cls.LOGO()
+
+        cls.NodeName = str(input("Enter your Node Name:  "))
+       	cls.Wallet = str(input("Enter your Wallet Address:   "))
+        cls.NODE_NUM = int(input("Enter Number of Nodes you want to Start:  "))
+        cls.CPU = int(input("Enter your CPU amount to use:   "))
+        cls.MEM = int(input("Enter Memory in GIB:   "))
+        cls.DISK = int(input("Enter DISKSPACE in GIB:   "))
+        cls.CPU_Hour = float(input("Enter CPU COSTS PER HOUR:   "))
+        cls.ENV_Hour = float(input("Enter ENV COSTS PER HOUR:   "))
+        cls.StartFee = float(input("ENTER PRICE FOR START JOBS:   "))
         print("Setup Price Raise Amount: set it like this: |15% = 1.15|30% = 1.30| ")
-        cls.Multi = float(input("Enter the Multiplikator you want:(default:0%):   "))
+        cls.Multi = float(input("Enter the Multiplikator you want:   "))
 
     @classmethod
     def confNode(self):
@@ -120,6 +124,13 @@ class Node:
         type(self).ENV_Hour *=self.Multi
         type(self).StartFee *=self.Multi
 
+    def setRaise(self, RaiseAmount=RaiseAmount):
+        self.RaiseAmount = RaiseAmount
+        self.CPU_Hour = float(self.CPU_Hour * self.RaiseAmount)
+        self.ENV_Hour = float(self.ENV_Hour * self.RaiseAmount)
+        self.StartFee = float(self.StartFee * self.RaiseAmount)
+
+
     def dockerDIR(self):
         
         self.NEWDIR = str(("Node" + str(self.NodeID)))
@@ -134,6 +145,15 @@ class Node:
         os.system('make presets')
         os.system('make upd')
         self.changeDIR()
+
+    @classmethod
+    def LOGO(cls, Version=Version):
+        print("   **** welcome To GLMAutoNODE ****")
+        print(" __                         __  __  __ ")
+        time.sleep(0.1)
+        print("/ _ |  |\/| /\    |_ _ |\ |/  \|  \|_  ")
+        time.sleep(0.1)
+        print("\__)|__|  |/--\|_||_(_)| \|\__/|__/|__ " + cls.Version)
 
     def Looper(self):
         while self.NodeID < self.NODE_NUM:
