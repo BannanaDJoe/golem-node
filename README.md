@@ -32,14 +32,15 @@ Currently only works on Linux machines.
  
  `nano /etc/docker/daemon.json`
  
- {
-  "default-address-pools":
-  [
-    {"base":"10.10.0.0/16","size":24}
-  ]
-}
+` {`
+`  "default-address-pools":`
+`  [ `
+`    {"base":"10.10.0.0/16","size":24}`
+`  ]`
+`}`
  
- 
+Restart Docker Service : 
+
  `service docker restart`
  
 ### START ### 
