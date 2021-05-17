@@ -31,14 +31,14 @@ Currently only works on Linux machines.
  maybee the following is needed : ( if after 15 New Stacks you get errors by Creating the NODES)
  
  `nano /etc/docker/daemon.json`
- `
+ 
  {
   "default-address-pools":
   [
     {"base":"10.10.0.0/16","size":24}
   ]
 }
- `
+ 
  
  `service docker restart`
  
