@@ -5,6 +5,7 @@ Why forked?
 - I liked the convenience of the Makefile of [golem-node](https://github.com/alexandre-abrioux/golem-node) as well as their healthchecks but I also wanted the scalability introduced by [scaleable-golem-provider](https://github.com/cryptobench/scaleable-golem-provider)
 - I like the idea of using preset files instead of a manual `golemsp settings` run from [scaleable-golem-provider](https://github.com/cryptobench/scaleable-golem-provider), but I wanted to leverable settings via environment variables
 - I wanted the ability to test pre-release versions
+-ADDED: Automated Price Increse for New Docker Container
 - aiming to add more features in the future
 
 Caveats?
@@ -21,7 +22,30 @@ I recommend checking out the parent repos mentioned above for more general infor
 You need to have Docker as well as docker-compose installed.
 Tested on Docker version 20.10.5 and docker-compose version 1.28.5.
 Currently only works on Linux machines.
-  
+ 
+####################################################
+
+ # Changes : 
+ To run more as 15 Container Stacks with Bridg Network i comment the network section on docker-compose.yml
+ 
+ maybee the following is needed : ( if after 15 New Stacks you get errors by Creating the NODES)
+ 
+ `nano /etc/docker/daemon.json`
+ `
+ {
+  "default-address-pools":
+  [
+    {"base":"10.10.0.0/16","size":24}
+  ]
+}
+ `
+ 
+ `service docker restart`
+ 
+### START ### 
+To Start the Automated Mode run python GLMAutoNODE.py
+ 
+ 
 ## :arrow_forward: Usage  
   
 You can clone this repository or use the provided `docker-compose.yml` as a base template for your own setup.  
