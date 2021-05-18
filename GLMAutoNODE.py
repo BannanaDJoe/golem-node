@@ -1,8 +1,11 @@
+#!/usr/bin/env python3
 import os
 import time
 import os.path
 from typing import NewType
 import shutil, errno
+import urllib.request, json 
+
 
 class Node:
 
@@ -56,6 +59,7 @@ class Node:
     def quest(cls):
         
         cls.LOGO()
+        cls.getData()
 
         cls.NodeName = str(input("Enter your Node Name:  "))
        	cls.Wallet = str(input("Enter your Wallet Address:   "))
@@ -130,6 +134,12 @@ class Node:
         self.ENV_Hour = float(self.ENV_Hour * self.RaiseAmount)
         self.StartFee = float(self.StartFee * self.RaiseAmount)
 
+    @classmethod
+    def getData(cls):
+        with urllib.request.urlopen("https://api.golemstats.com/v1/provider/average/earnings") as url:
+            cls.data = json.loads(url.read().decode())
+            cls.rawdataCPU = cls.data['average_earnings']
+
 
     def dockerDIR(self):
         
@@ -166,5 +176,10 @@ def main():
     
     Start = Node()
     print(Start.__dict__)
+
+    def worker():
+        pass
+
+
     
 main()
