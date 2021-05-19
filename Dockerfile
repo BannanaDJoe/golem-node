@@ -7,7 +7,7 @@ ARG YA_DIR_BIN_TMP=/golem-provider-bin/
 ARG YA_DIR_PLUGINS=/lib/yagna/plugins/
 
 FROM ubuntu:${UBUNTU_VERSION} as installer
-ARG YA_CORE_VERSION
+ARG YA_CORE_VERSION=pre-rel-v0.6.6-rc3
 ARG YA_WASI_VERSION
 ARG YA_VM_VERSION
 ARG YA_DIR_BIN_TMP
