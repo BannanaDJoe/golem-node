@@ -70,8 +70,8 @@ cpuh:		## Run The Auto mode with price Changingdeamon
 
 .PHONY: envh
 envh:		## Run The Auto mode with price Changingdeamon
-	docker-compose exec --index=$(index) node golemsp settings set --cpu-per-hour $(envh)
+	docker-compose exec --index=$(index) node golemsp settings set --env-per-hour $(envh)
 
 .PHONY: sfee
 sfee:		## Run The Auto mode with price Changingdeamon
-	docker-compose exec --index=$(index) node golemsp settings set --cpu-per-hour $(sfee)
+	docker-compose exec --index=$(index) node golemsp settings set --starting-fee $(sfee)
