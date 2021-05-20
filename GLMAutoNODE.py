@@ -1,66 +1,39 @@
 #!/usr/bin/env python3
-import os
 import time
-import os.path
+import platform
 from typing import NewType
 import shutil, errno
 import urllib.request, json 
+import subprocess
 
+class NodeCreator:
 
-class Node:
-
-    Version = "0.1"
-    # NODE INFOS
-    NodeName = ""
-    Wallet = ""
-    NODE_NUM = 1
+    # Raise Amounts
     NodeID = 0
-
-    # HW SPECS
-    CPU = 3
-    MEM = 2
-    DISK = 20
-    # CPU COSTS
+    RaiseAmount = 1.00
+    Multi = 1.15
+    Index = 1
     CPU_Hour = 0.1
     ENV_Hour = 0.02
     StartFee = 0.0
 
-    # Raise Amounts
-    RaiseAmount = 1.00
-    Multi = 1.15
-
-    # Path Vars
-    DockerDIR = ""
-    NEWDIR = ""
-
     def __init__(self):
         type (self).NodeID +=1
         if self.NodeID <= 1:
+            self.LOGO()
             self.quest()
             self.confNode()
             self.Run()
             self.changeRaise(self.RaiseAmount)
             self.Looper()
         else:
-            if self.RaiseAmount < self.Multi:
-                self.dockerDIR()
-                self.confNode()
-                self.Run()
-                self.Looper()    
-            else:            
-                self.setRaise()
-                self.dockerDIR()
-                self.confNode()
-                self.Run()
-                self.changeRaise(self.RaiseAmount)
-                self.Looper()
-            
+            self.setRaise()
+            self.changer()
+            self.changeRaise(self.RaiseAmount)
+            self.Looper
+
     @classmethod
     def quest(cls):
-        
-        cls.LOGO()
-        cls.getData()
-
         cls.NodeName = str(input("Enter your Node Name:  "))
        	cls.Wallet = str(input("Enter your Wallet Address:   "))
         cls.NODE_NUM = int(input("Enter Number of Nodes you want to Start:  "))
@@ -71,21 +44,22 @@ class Node:
         cls.ENV_Hour = float(input("Enter ENV COSTS PER HOUR:   "))
         cls.StartFee = float(input("ENTER PRICE FOR START JOBS:   "))
         print("Setup Price Raise Amount: set it like this: |15% = 1.15|30% = 1.30| ")
+        print("Leave it Empty if you want the !!!SAME PRICE ON ALL NODES!!")
         cls.Multi = float(input("Enter the Multiplikator you want:   "))
 
     @classmethod
     def confNode(self):
 
-        self.DockerDIR = os.getcwd()
         file = open('.env', 'w')
         #Mainnet Settings
         file.write("#This file contains all settings change to your needs")
+        file.write("\n")
         file.write("\nYA_PAYMENT_NETWORK=mainnet")
         file.write("\nNODE_SUBNET=public-beta")
 
         #NODE Settings
+        file.write("\n")
         file.write("\n# run settings")
-
         file.write("\nNODE_NAME=" + str(self.NodeName))
         file.write("\nYA_ACCOUNT="+ str(self.Wallet))
         file.write("\nNODE_CPU_THREADS=" + str(self.CPU))
@@ -97,8 +71,8 @@ class Node:
         
         # Run Settings
         file.write("\n")
-        file.write("NODE_NUM=1\n")
-        file.write("NICENESS=20\n")
+        file.write("\nNODE_NUM=" + str(self.NODE_NUM))
+        file.write("\nNICENESS=20\n")
 
         # AutoHeal Settings
         file.write("AUTOHEAL_CONTAINER_LABEL=all\n")
@@ -107,7 +81,7 @@ class Node:
   
         # Docker-Compose Name Settings
 
-        file.write("\nCOMPOSE_PROJECT_NAME=" + str(self.NodeName + str(self.NodeID)))
+        file.write("\nCOMPOSE_PROJECT_NAME=" + str(self.NodeName))
 
 
         # Uncoment for Debug LOG on discord @Philip_golem
@@ -121,7 +95,13 @@ class Node:
         #file.write("ya_service_bus=trace\n")
 
         file.close()
-    
+        
+    def Looper(self):
+        while self.NodeID < self.NODE_NUM:
+            main()
+        else:
+            pass
+
     def changeRaise(self, Multi):
         type(self).RaiseAmount *=self.Multi
         type(self).CPU_Hour *=self.Multi
@@ -133,53 +113,50 @@ class Node:
         self.CPU_Hour = float(self.CPU_Hour * self.RaiseAmount)
         self.ENV_Hour = float(self.ENV_Hour * self.RaiseAmount)
         self.StartFee = float(self.StartFee * self.RaiseAmount)
+    
+    @classmethod
+    def changer(cls):
+        
+        index = "index=" + str(cls.NodeID)
+        cpuPrice = "cpuh=" + str(cls.CPU_Hour)
+        envPrice = "envh=" + str(cls.ENV_Hour)
+        startPrice = "sfee=" + str(cls.StartFee)
+        
+        cpuh = subprocess.run(['make', 'cpuh', index , cpuPrice])
+
+        envh = subprocess.run(['make', 'envh', index , envPrice])
+        
+        sfee = subprocess.run(['make', 'sfee', index , startPrice]) 
 
     @classmethod
-    def getData(cls):
-        with urllib.request.urlopen("https://api.golemstats.com/v1/provider/average/earnings") as url:
-            cls.data = json.loads(url.read().decode())
-            cls.rawdataCPU = cls.data['average_earnings']
-
-
-    def dockerDIR(self):
-        
-        self.NEWDIR = str(("Node" + str(self.NodeID)))
-        shutil.copytree(self.DockerDIR, self.NEWDIR)
-        os.chdir(self.NEWDIR)
- 
-    def changeDIR(self):
-        os.system("cd ..")
-        
-    def Run(self):
-        print("RUN NODE"+ str(self.NodeID))
-        os.system('make presets')
-        os.system('make upd')
-        self.changeDIR()
+    def Run(cls):
+        subprocess.run('make presets', shell=True)
+        subprocess.run('make upd', shell=True)
+        print("Nodes are Starting")
+        time.sleep(1)
+        print("Node Price changes will start soon")
+        time.sleep(2)
 
     @classmethod
-    def LOGO(cls, Version=Version):
+    def LOGO(cls):
         print("   **** welcome To GLMAutoNODE ****")
+        time.sleep(0.1)
         print(" __                         __  __  __ ")
         time.sleep(0.1)
         print("/ _ |  |\/| /\    |_ _ |\ |/  \|  \|_  ")
         time.sleep(0.1)
-        print("\__)|__|  |/--\|_||_(_)| \|\__/|__/|__ " + cls.Version)
-
-    def Looper(self):
-        while self.NodeID < self.NODE_NUM:
-            main()
-        else:
-            pass
+        print("\__)|__|  |/--\|_||_(_)| \|\__/|__/|__ ")
 
 
 def main():
     
-    Start = Node()
-    print(Start.__dict__)
+    create = NodeCreator()
 
+    # Comming soon auto change Price by averange price
+    # https://api.golemstats.com/v1/provider/average/earnings
+    # https://api.golemstats.com/v1/network/pricing/average
     def worker():
         pass
 
-
-    
+   
 main()
