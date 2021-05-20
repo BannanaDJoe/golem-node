@@ -30,7 +30,7 @@ Currently only works on Linux machines.
 
 To Start the Automated Mode run `python GLMAutoNODE.py`
 
-- Enter The NODE Name you Want
+- Enter your NODE Name
 - Enter your Wallet Address
 - Enter Amount of Nodes you want to start
 - Enter Amount of CPU´s
@@ -40,15 +40,9 @@ To Start the Automated Mode run `python GLMAutoNODE.py`
 - Enter Price for ENV/HOUR
 - Enter Price for STARTJOB
 - Enter RaisAmount 
-( there will come some improvements that the cpu and mem grows with it so you can start at 1 and the cpu will increse too. )
-( but for now this works)
+( set it to 1 if you dont want to change the price over the Nodes )
 
-# Note 
-    - If you want to Restart you container REMOVE all Container / and networks from Docker + the Container Folders
-    - on th golem-node dir you now find Node(NodeID)
-    -   `rm -rf Node*`
-    -   Now you can Restart the script with `python GLMAutoNODE.py`
- 
+
 ## :arrow_forward:  STATIC Usage  
   
 You can clone this repository or use the provided `docker-compose.yml` as a base template for your own setup.  
