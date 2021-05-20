@@ -64,6 +64,14 @@ clean:			## Remove cached files older than 7 days
 presets: 		## Show the running node settings
 	python3 generate_presets.py
 	
-.PHONY: auto
-presets:		## Run The Auto mode with price Changingdeamon
-	python3 GLMAutoNODE.py
+.PHONY: cpuh
+cpuh:		## Run The Auto mode with price Changingdeamon
+	docker-compose exec --index=$(index) node golemsp settings set --cpu-per-hour $(cpuh)
+
+.PHONY: envh
+envh:		## Run The Auto mode with price Changingdeamon
+	docker-compose exec --index=$(index) node golemsp settings set --cpu-per-hour $(envh)
+
+.PHONY: sfee
+sfee:		## Run The Auto mode with price Changingdeamon
+	docker-compose exec --index=$(index) node golemsp settings set --cpu-per-hour $(sfee)
