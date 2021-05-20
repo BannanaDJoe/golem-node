@@ -62,7 +62,7 @@ clean:			## Remove cached files older than 7 days
 
 .PHONY: presets
 presets: 		## Show the running node settings
-	python3 generate_presets.py
+	python generate_presets.py
 
 .PHONY: cpuh
 cpuh:           ## Run The Auto mode with price Changingdeamon
